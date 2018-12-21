@@ -1,0 +1,17 @@
+{
+  "name"          : "OEIS",
+  "version"       : "0.1.0",
+  "perl"          : "6.c",
+  "authors"       : "Tobias Boege",
+  "description"   : "Look up sequences on the On-Line Encyclopedia of Integer Sequences®",
+  "tags"          : [ ],
+  "license"       : "Artistic-2.0",
+  "depends"       : ["WWW"],
+  "build-depends" : [ ],
+  "test-depends"  : ["Test::META"],
+  "resources"     : [ ],
+  "provides"      : {
+    "OEIS"        : "lib/OEIS.pm6"
+  },
+  "source-url"    : "git://github.com/taboege/p6-OEIS.git"
+}
