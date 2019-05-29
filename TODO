@@ -1,4 +1,3 @@
-- Put parsing and object creation into OEIS::Entry
 - Make OEIS::Keywords smartmatchable
 - Make lookup only the return the first value by default,
   add adverb for a Seq, return a Failure if not found,

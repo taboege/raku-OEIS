@@ -26,75 +26,7 @@ unit module OEIS;
 use WWW;
 
 use OEIS::Entry;
-use OEIS::Keywords;
 
-# https://oeis.org/eishelp1.html
-sub parse-page ($text --> Seq) {
-    my $last-id;
-    my %data;
-
-    gather for $text.lines {
-        # %N A002852 Continued fraction for Euler's constant (or Euler-Mascheroni constant) gamma.
-        next unless m/^
-            '%' $<key>=<[ISTUNDHFYAOEeptoKC]> \s
-            'A' $<ID>=[\d ** 6]
-            [ \s <( .+ )> ]?
-        $/;
-
-        # If the next entry starts, emit the previous one.
-        if quietly $last-id ne $<ID> {
-            take OEIS::Entry.new: |%data.Map if %data;
-            %data .= new;
-        }
-        # Also emit at the end.
-        LAST take OEIS::Entry.new: |%data if %data;
-
-        $last-id = ~$<ID>;
-
-        my $value = $/.Str.trim;
-        given $<key> {
-            when 'I' {
-                %data<ID> = IntStr.new(+$<ID>, "A$<ID>");
-                $value ~~ m/ ['M' $<MID>=[\d ** 4]]? \s ['N' $<NID>=[\d ** 4]]? /;
-                if $<MID> {
-                    %data<MID> = IntStr.new(+$<MID>, "M$<MID>");
-                }
-                if $<NID> {
-                    %data<NID> = IntStr.new(+$<NID>, "N$<NID>");
-                }
-            }
-            when 'S'|'T'|'U' {
-                %data<sequence>.append: $value.split(/\s* ',' \s*/)».Int
-            }
-            when 'N' { %data<name>   = $value            }
-            when 'D' { %data<references>.append:  $value }
-            when 'H' { %data<links>.append:       $value }
-            when 'F' { %data<formulas>.append:    $value }
-            when 'Y' { %data<crossrefs>.append:   $value }
-            when 'A' { %data<author> = $value            }
-            when 'O' {
-                with $value.split(/\s* ',' \s*/) {
-                    %data<start-arg> = +.[0];
-                    %data<offset> = +.[1];
-                }
-            }
-            when 'E' { %data<errors>.append:      $value }
-            when 'e' { %data<examples>.append:    $value }
-            when 'p' { %data<maple>.append:       $value }
-            when 't' { %data<mathematica>.append: $value }
-            when 'o' { %data<programs>.append:    $value }
-            when 'K' {
-                %data<keywords>.append: $value.split(/\s* ',' \s*/).map: {
-                    Keyword::{$_} // fail "unknown keyword '$_'"
-                }
-            }
-            when 'C' { %data<comments>.append:    $value }
-        }
-    }
-}
-
-# TODO: Handle "too many results" error.
-# TODO: Return Failure if none found.
 sub lookup'paginated ($base-url) {
     my $start = 0;
     my $top-id = -Inf;
@@ -102,9 +34,9 @@ sub lookup'paginated ($base-url) {
         # If the $start argument is too big, OEIS will return
         # the last page again and again. Since the results are
         # in "relevance order", we can't use monotonicity.
-        # Instead remember the IDs seen on the previous page
-        # and stop if entries repeat.
-        for parse-page get "$base-url&start=$start" {
+        # Instead remember the first ID seen on the previous
+        # page and stop if it repeats.
+        for OEIS::Entry.parse-oeis(get "$base-url&start=$start") {
             FIRST {
                 last PAGE if $top-id == .ID;
                 $top-id = .ID;
@@ -116,10 +48,6 @@ sub lookup'paginated ($base-url) {
     }
 }
 
-# TODO: Advanced search syntaxes https://oeis.org/hints.html
-# TODO: Normally only return the most relevant Entry. Have :all adverb,
-# which returns a Seq of entries. Anything in between can be done
-# by methods on that :all Seq.
 our proto lookup (|) { * }
 
 #| Look up a sequence by its OEIS ID, e.g. 123 for "A000123".
