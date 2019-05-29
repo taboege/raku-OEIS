@@ -20,3 +20,7 @@ has @.errors;
 has @.examples;
 has @.keywords is required;
 has @.comments;
+
+method gist {
+    "OEIS $!ID «$!name»"
+}

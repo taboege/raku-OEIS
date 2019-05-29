@@ -9,8 +9,8 @@ OEIS - Look up sequences on the On-Line Encyclopedia of Integer Sequences®
 =begin code
 use OEIS;
 
-say OEIS::lookup(1, 1, * + * ... *).first.name
-#= Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.
+say OEIS::lookup(1, 1, * + * ... *).first
+#= OEIS A000045 «Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.»
 =end code
 
 =head1 DESCRIPTION
