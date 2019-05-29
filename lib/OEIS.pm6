@@ -9,7 +9,7 @@ OEIS - Look up sequences on the On-Line Encyclopedia of Integer Sequences®
 =begin code
 use OEIS;
 
-say OEIS::lookup(1, 1, * + * ... *).first
+say OEIS::lookup 1, 1, * + * ... *
 #= OEIS A000045 «Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.»
 =end code
 
@@ -48,22 +48,30 @@ sub lookup'paginated ($base-url) {
     }
 }
 
-our proto lookup (|) { * }
+our sub lookup (:$all = False, |c) {
+    my \seq = lookup'multi |c;
+    $all ?? seq !! seq.first
+}
 
 #| Look up a sequence by its OEIS ID, e.g. 123 for "A000123".
-multi lookup (Int $ID) {
+multi lookup'multi (Int $ID) {
     lookup'paginated qq<https://oeis.org/search?q=id:{ $ID.fmt("A%06d") }&fmt=text>
 }
 
 #| Look up the sequence from a Seq producing it.
-multi lookup (Seq $seq) {
-    # TODO: Adaptive
+multi lookup'multi (Seq $seq) {
+    # XXX: How to choose the sample size? Too few and we get too many
+    # results, which is not critical but can push the really relevant
+    # sequence away from the top of the results. Too many may use lots
+    # of time to compute and memory to store (e.g. with double exponential
+    # growth in the Seq) and the OEIS might return too few results because
+    # they don't have that many terms themselves.
     my @partial-seq = $seq[^8];
-    lookup @partial-seq
+    lookup'multi @partial-seq
 }
 
 #| Look up a sequence from some of its members.
-multi lookup (*@partial-seq) {
+multi lookup'multi (*@partial-seq) {
     lookup'paginated qq<https://oeis.org/search?q={ @partial-seq.join(',') }&fmt=text>
 }
 

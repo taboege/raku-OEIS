@@ -1,10 +1,13 @@
-- Make lookup only the return the first value by default,
-  add adverb for a Seq, return a Failure if not found,
-  change the SYNOPSIS to not use .first
 - Put OEIS::Keywords in the OEIS package and make them available
   directly from `use OEIS`. That's the only import one should need
 - Make lookup("A000123") DWIM
-- Handle errors
+- Handle errors, most those from OEIS' interface like "no results
+  found" or "too many results found" or network errors from WWW.
+  And, for example there is an "$!author required but not provided"
+  error when I search long enough among the results for Fibonacci.
+  Bug in OEIS? Also think about returning a Failure when no or too
+  many results were found. Use that to bisect a good value in the
+  Seq multi candidate?
 - Make .crossrefs return a lazy list of OEIS::Entry objects
 - Add tests and documentation. Allow offline testing by downloading
   some search results. But also test the webpage fetching features
@@ -12,3 +15,5 @@
 - Bump to 1.0.0, add :ver, :auth and :api
 
 - Add advanced search syntaxes
+- How to choose the number of elements from a lazy Seq to us
+  in a query to the OEIS?
