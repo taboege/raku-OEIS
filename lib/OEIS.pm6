@@ -54,8 +54,13 @@ our sub lookup (:$all = False, |c) {
 }
 
 #| Look up a sequence by its OEIS ID, e.g. 123 for "A000123".
-multi lookup'multi (Int $ID) {
-    lookup'paginated qq<https://oeis.org/search?q=id:{ $ID.fmt("A%06d") }&fmt=text>
+multi lookup'multi (Int $ID, :$type = 'A') {
+    lookup'paginated qq<https://oeis.org/search?q=id:{ $type ~ $ID.fmt("%06d") }&fmt=text>
+}
+
+#| Look up a sequence by its stringified OEIS ID, e.g. "A000123".
+multi lookup'multi (Str $ID where * ~~ /^ $<type>=<[AMN]> <( \d+ )> $/) {
+    samewith +$/, :$<type>
 }
 
 #| Look up the sequence from a Seq producing it.
@@ -67,7 +72,7 @@ multi lookup'multi (Seq $seq) {
     # growth in the Seq) and the OEIS might return too few results because
     # they don't have that many terms themselves.
     my @partial-seq = $seq[^8];
-    lookup'multi @partial-seq
+    samewith @partial-seq
 }
 
 #| Look up a sequence from some of its members.

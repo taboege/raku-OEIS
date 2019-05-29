@@ -1,6 +1,5 @@
 - Put OEIS::Keywords in the OEIS package and make them available
   directly from `use OEIS`. That's the only import one should need
-- Make lookup("A000123") DWIM
 - Handle errors, most those from OEIS' interface like "no results
   found" or "too many results found" or network errors from WWW.
   And, for example there is an "$!author required but not provided"
