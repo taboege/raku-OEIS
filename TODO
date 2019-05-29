@@ -1,5 +1,3 @@
-- Put OEIS::Keywords in the OEIS package and make them available
-  directly from `use OEIS`. That's the only import one should need
 - Handle errors, most those from OEIS' interface like "no results
   found" or "too many results found" or network errors from WWW.
   And, for example there is an "$!author required but not provided"
@@ -14,5 +12,3 @@
 - Bump to 1.0.0, add :ver, :auth and :api
 
 - Add advanced search syntaxes
-- How to choose the number of elements from a lazy Seq to us
-  in a query to the OEIS?

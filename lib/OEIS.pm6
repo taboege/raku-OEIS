@@ -27,6 +27,13 @@ use WWW;
 
 use OEIS::Entry;
 
+# Put OEIS::Keywords constants under the OEIS:: package.You can get them
+# directly into your current package by requiring OEIS::Keywords, but since
+# it contains names such as `base`, this is not recommended.
+for OEIS::Keyword::.kv -> $key, $value {
+    OEIS::«$key» = $value
+}
+
 sub lookup'paginated ($base-url) {
     my $start = 0;
     my $top-id = -Inf;
