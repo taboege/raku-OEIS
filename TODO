@@ -1,0 +1,12 @@
+- Put parsing and object creation into OEIS::Entry
+- Make OEIS::Keywords smartmatchable
+- Make lookup only the return the first value by default,
+  add adverb for a Seq, return a Failure if not found,
+  change the SYNOPSIS to not use .first
+- Make lookup("A000123") DWIM
+- Handle errors
+- Make .crossrefs return a lazy list of OEIS::Entry objects
+- Add tests and documentation
+- Bump to 1.0.0, add :ver, :auth and :api
+
+- Add advanced search syntaxes
