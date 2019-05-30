@@ -1,9 +1,8 @@
-- add OEIS::lookup(:plain) to retrieve results in their internal
-  textual format.
 - Add tests and documentation. Allow offline testing by downloading
   some search results. But also test the webpage fetching features
   like pagination if NETWORK_TESTING is enabled. Convert most tests
   to use cached files, though.
+- Update README.
 - Check types of attributes in OEIS::Entry.
 - Also think about returning a Failure when no or too many
   results were found. Use that to bisect a good value in the

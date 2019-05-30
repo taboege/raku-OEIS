@@ -24,21 +24,12 @@ has @.examples;
 has $.keywords is required;
 has @.comments;
 
-#| Parse a set of records in OEIS' L<internal format|https://oeis.org/eishelp1.html>.
-method parse-oeis ($text --> Seq) {
+#| Parse a record in OEIS' L<internal format|https://oeis.org/eishelp1.html>.
+method parse ($record --> OEIS::Entry:D) {
     my %partial-object;
-
-    sub make-object {
-        take OEIS::Entry.new: |%partial-object if %partial-object;
-        %partial-object .= new;
-    }
 
     sub add (*%attribs) {
         for %attribs.kv -> $key, $value {
-            # The ID is always the first thing we learn about an entry.
-            # If we see a new ID, it means the current entry is done.
-            make-object if $key eq "ID";
-
             if $value ~~ Positional {
                 %partial-object{$key}.append: $value<>;
             }
@@ -48,35 +39,15 @@ method parse-oeis ($text --> Seq) {
         }
     }
 
-    gather for $text.lines {
-        # Don't forget to emit the last entry.
-        LAST make-object;
-
-        # Skip smalltalk
-        next if m/^ '#' /;
-        next if m/^ \s* $/;
-        next if m/^ 'Search:' /;
-        next if m/^ 'Showing' /;
-
-        # No results leads to empty Seq
-        last if m/^ 'No results.' $/;
-
-        die X::OEIS::TooMany.new
-            if m/^ 'Too many results. Please narrow search.' $/;
-
-        # Query parsing error on the server side?
-        die X::OEIS::Query.new(reason => $/.trim)
-            if m/^ 'Could not parse search query:' <( .* )> /;
-
-        # Response parsing error? A typical line looks like this:
-        # %N A002852 Continued fraction for Euler's constant (or Euler-Mascheroni constant) gamma.
+    gather for $record.lines {
+        # Response parsing error?
         die X::OEIS::Parser.new(reason => "unknown line format '$_'")
             unless m/
-                ^^
-                '%' $<key>=<[ISTUNDHFYAOEeptoKC]> \s
+                ^
+                '%' $<key>=. <.ws>
                 'A' $<ID>=[\d ** 6]
-                [ \s <( .+ )> ]?
-                $$
+                [ <.ws> <( .+ )> ]?
+                $
             /;
 
         my $value = $/.Str.trim;
@@ -119,6 +90,8 @@ method parse-oeis ($text --> Seq) {
             }
         }
     }
+
+    OEIS::Entry.new: |%partial-object
 }
 
 submethod TWEAK {
