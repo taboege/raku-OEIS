@@ -103,24 +103,31 @@ multi fetch (*@partial-seq) {
     fetch'paginated qq<https://oeis.org/search?q={ @partial-seq.join(',') }&fmt=text>
 }
 
+our proto chop-records (|) { * }
+
 #| Turn a sequence of pages into a sequence of records.
-sub chop-records (\pages) {
-    gather for pages {
-        state @record;
+multi chop-records (Seq \pages) {
+    gather for pages -> $page {
+        take .self for chop-records($page);
+    }
+}
 
-        sub emit-record {
-            take @record.join("\n") if @record;
-            @record .= new;
-        }
+#| Turn a single page into a sequence of records.
+multi chop-records (Str $page) {
+    my @record;
 
+    sub emit-record {
+        take @record.join("\n") if @record;
+        @record .= new;
+    }
+
+    # E.g.: %N A002852 Continued fraction for Euler's constant (or Euler-Mascheroni constant) gamma.
+    gather for $page.lines.grep(*.starts-with: '%') {
         # Don't forget to emit the last record.
         LAST emit-record;
 
-        # %N A002852 Continued fraction for Euler's constant (or Euler-Mascheroni constant) gamma.
-        for .lines.grep(*.starts-with: '%') {
-            emit-record if m/^ '%I' /;
-            push @record, $_;
-        }
+        emit-record if m/^ '%I' /;
+        push @record, $_;
     }
 }
 
