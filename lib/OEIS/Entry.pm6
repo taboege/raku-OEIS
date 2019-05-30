@@ -18,7 +18,7 @@ has $.offset is required;
 has @.maple;
 has @.mathematica;
 has @.programs;
-has @.errors;
+has @.errata;
 has @.examples;
 has $.keywords is required;
 has @.comments;
@@ -85,7 +85,7 @@ method parse-oeis ($text --> Seq) {
                     add offset    => +.[1];
                 }
             }
-            when 'E' { add errors      => [$value] }
+            when 'E' { add errata      => [$value] }
             when 'e' { add examples    => [$value] }
             when 'p' { add maple       => [$value] }
             when 't' { add mathematica => [$value] }
