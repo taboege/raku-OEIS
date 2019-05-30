@@ -1,12 +1,9 @@
-- Add tests and documentation. Allow offline testing by downloading
-  some search results. But also test the webpage fetching features
-  like pagination if NETWORK_TESTING is enabled. Convert most tests
-  to use cached files, though.
+- Complete tests. Check attribute types in OEIS::Entry.
+- Complete documentation.
 - Update README.
-- Check types of attributes in OEIS::Entry.
-- Also think about returning a Failure when no or too many
-  results were found. Use that to bisect a good value in the
-  Seq multi candidate?
+- Return a Failure instead of an empty Seq when no results are found?
+  What about too many results? Either way, use these indicators to
+  bisect a good value in the Seq multi candidate. Add a test.
 - Bump to v1.0.0, add :ver, :auth and :api.
 
 - Add advanced search syntaxes.
