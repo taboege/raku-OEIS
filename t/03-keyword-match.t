@@ -22,10 +22,12 @@ subtest "smartmatching works" => {
     plan 3;
     use OEIS::Keywords;
 
-    my @results = OEIS::lookup((1, 1, *+* ... *), :all).head(20);
-    is +@results.grep(* ~~ nice),        1, '1x nice';
-    is +@results.grep(* ~~ base & nonn), 6, '6x base and nonn';
-    like OEIS::lookup((1, 1, *+* ... *), :all).first(* !~~ easy).name,
+    my @results = OEIS::chop-records(slurp 't/data/Fibonacci-Search-all.txt')\
+        .map({ OEIS::Entry.parse($_) })\
+        .head(20);
+    cmp-ok @results.grep(* ~~ nice),        '==', 1, '1x nice';
+    cmp-ok @results.grep(* ~~ base & nonn), '==', 6, '6x base and nonn';
+    like @results.first(* !~~ easy).name,
         /^ 'Number of transitive rooted trees with n nodes' /,
         "first non-easy result";
 }

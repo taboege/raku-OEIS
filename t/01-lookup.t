@@ -4,7 +4,33 @@ use OEIS;
 use lib 't/lib';
 use Test::OEIS;
 
-plan 4;
+plan 6;
+
+subtest 'parse a single record' => {
+    plan 3;
+
+    my $ent;
+
+    lives-ok {
+        $ent = OEIS::Entry.parse(OEIS::chop-records slurp 't/data/A000045.txt');
+    }, 'parsing a record works';
+
+    is   $ent.ID,   'A000045', 'ID is correct';
+    like $ent.name, / 'Fibonacci numbers' /, 'name is correct';
+}
+
+subtest 'parse many pages of records' => {
+    plan 2;
+
+    my @results;
+
+    lives-ok {
+        OEIS::chop-records(slurp 't/data/Fibonacci-Search-all.txt') ==>
+            map { OEIS::Entry.parse($_) } ==> @results
+    }, 'parsing a concatenation of pages works';
+
+    cmp-ok @results, '==', 92, '92 entries parsed from search';
+}
 
 online -> {
     like OEIS::lookup(1, 1, * + * ... *).name,

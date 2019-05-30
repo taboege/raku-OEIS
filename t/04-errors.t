@@ -19,11 +19,9 @@ online -> {
         'malformed query throws';
 }
 
-online -> {
-    throws-like { OEIS::Entry.parse('quux') },
-        X::OEIS::Parser,
-        'bogus response throws';
-}
+throws-like { OEIS::Entry.parse('quux') },
+    X::OEIS::Parser,
+    'bogus response throws';
 
 online -> {
     # If you have any ideas about this sequence, please let me know at

@@ -1,4 +1,3 @@
-- Complete tests.
 - Complete documentation.
 - Update README.
 - Return a Failure instead of an empty Seq when no results are found?
