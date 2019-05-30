@@ -52,6 +52,8 @@ sub lookup'paginated ($base-url) {
             $start++;
             take .self;
         }
+        # No result? No result.
+        last if not $start;
     }
 }
 

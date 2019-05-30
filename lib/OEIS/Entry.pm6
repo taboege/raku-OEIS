@@ -2,6 +2,7 @@
 unit class OEIS::Entry;
 
 use OEIS::Keywords;
+use X::OEIS;
 
 has $.ID is required;
 has $.MID;
@@ -51,15 +52,32 @@ method parse-oeis ($text --> Seq) {
         # Don't forget to emit the last entry.
         LAST make-object;
 
-        # A typical line looks like this:
+        # Skip smalltalk
+        next if m/^ '#' /;
+        next if m/^ \s* $/;
+        next if m/^ 'Search:' /;
+        next if m/^ 'Showing' /;
+
+        # No results leads to empty Seq
+        last if m/^ 'No results.' $/;
+
+        die X::OEIS::TooMany.new
+            if m/^ 'Too many results. Please narrow search.' $/;
+
+        # Query parsing error on the server side?
+        die X::OEIS::Query.new(reason => $/.trim)
+            if m/^ 'Could not parse search query:' <( .* )> /;
+
+        # Response parsing error? A typical line looks like this:
         # %N A002852 Continued fraction for Euler's constant (or Euler-Mascheroni constant) gamma.
-        next unless m/
-            ^^
-            '%' $<key>=<[ISTUNDHFYAOEeptoKC]> \s
-            'A' $<ID>=[\d ** 6]
-            [ \s <( .+ )> ]?
-            $$
-        /;
+        die X::OEIS::Parser.new(reason => "unknown line format '$_'")
+            unless m/
+                ^^
+                '%' $<key>=<[ISTUNDHFYAOEeptoKC]> \s
+                'A' $<ID>=[\d ** 6]
+                [ \s <( .+ )> ]?
+                $$
+            /;
 
         my $value = $/.Str.trim;
         given $<key> {
@@ -96,6 +114,9 @@ method parse-oeis ($text --> Seq) {
                 }
             }
             when 'C' { add comments => [$value] }
+            default {
+                die X::OEIS::Parser(reason => "unknown tag '$_'");
+            }
         }
     }
 }
