@@ -1,4 +1,3 @@
-- Make .crossrefs return a lazy list of OEIS::Entry objects.
 - add OEIS::lookup(:plain) to retrieve results in their internal
   textual format.
 - Add tests and documentation. Allow offline testing by downloading
