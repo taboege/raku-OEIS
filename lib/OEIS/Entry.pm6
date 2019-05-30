@@ -12,7 +12,7 @@ has @.references;
 has @.links;
 has @.formulas;
 has @.crossrefs;
-has $.author is required;
+has $.author; # is required only if not 'dead'
 has $.start-arg is required;
 has $.offset is required;
 has @.maple;
