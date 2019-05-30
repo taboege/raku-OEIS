@@ -4,18 +4,18 @@ unit class OEIS::Entry;
 use OEIS::Keywords;
 use X::OEIS;
 
-has $.ID is required;
-has $.MID;
-has $.NID;
-has @.sequence is required;
-has $.name is required;
+has IntStr $.ID is required;
+has IntStr $.MID;
+has IntStr $.NID;
+has Int @.sequence is required;
+has Str $.name is required;
 has @.references;
 has @.links;
 has @.formulas;
 has @.crossrefs;
-has $.author; # is required only if not 'dead'
-has $.start-arg is required;
-has $.offset is required;
+has Str $.author; # is required only if not 'dead'
+has Int $.start-arg is required;
+has Int $.offset is required;
 has @.maple;
 has @.mathematica;
 has @.programs;
@@ -29,12 +29,20 @@ method parse ($record --> OEIS::Entry:D) {
     my %partial-object;
 
     sub add (*%attribs) {
+        temp $_ = %partial-object;
         for %attribs.kv -> $key, $value {
             if $value ~~ Positional {
-                %partial-object{$key}.append: $value<>;
+                # Avoid autovivification because we need to preserve
+                # the type of $value.
+                if .{$key}:exists {
+                    .{$key}.append: $value<>;
+                }
+                else {
+                    .{$key} = $value<>;
+                }
             }
             else {
-                %partial-object{$key} = $value;
+                .{$key} = $value;
             }
         }
     }
@@ -60,7 +68,7 @@ method parse ($record --> OEIS::Entry:D) {
                 add NID => IntStr.new(+$<NID>, "N$<NID>") if $<NID>;
             }
             when 'S'|'T'|'U' {
-                add sequence => [$value.split(/\s* ',' \s*/)».Int]
+                add sequence => [$value.split(/\s* ',' \s*/, :skip-empty)».Int]
             }
             when 'N' { add name       => $value   }
             when 'D' { add references => [$value] }
@@ -91,7 +99,7 @@ method parse ($record --> OEIS::Entry:D) {
         }
     }
 
-    OEIS::Entry.new: |%partial-object
+    OEIS::Entry.new: |%partial-object.Map
 }
 
 submethod TWEAK {
