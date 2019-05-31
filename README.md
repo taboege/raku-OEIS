@@ -6,16 +6,18 @@ OEIS - Look up sequences on the On-Line Encyclopedia of Integer Sequences®
 SYNOPSIS
 ========
 
-    use OEIS;
+``` perl6
+use OEIS;
 
-    say OEIS::lookup 1, 1, * + * ... *;
-    #= OEIS A000045 «Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.»
+say OEIS::lookup 1, 1, * + * ... *;
+#= OEIS A000045 «Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.»
 
-    say OEIS::lookup((1, 1, *+* ... *), :all).grep(* !~~ OEIS::easy).head;
-    #= OEIS A290689 «Number of transitive rooted trees with n nodes.»
+say OEIS::lookup((1, 1, *+* ... *), :all).grep(* !~~ OEIS::easy).head;
+#= OEIS A290689 «Number of transitive rooted trees with n nodes.»
 
-    say OEIS::lookup(1, 2, 4 ... ∞).mathematica.head;
-    #= Table[2^n, {n, 0, 50}]
+say OEIS::lookup(1, 2, 4 ... ∞).mathematica.head;
+#= Table[2^n, {n, 0, 50}]
+```
 
 DESCRIPTION
 ===========
@@ -25,10 +27,12 @@ This module provides an interface to the [On-Line Encyclopedia of Integer Sequen
 sub fetch
 ---------
 
-    multi fetch (Int $ID, :$type 'A')
-    multi fetch (Str $ID where { … })
-    multi fetch (Seq $seq)
-    multi fetch (*@partial-seq)
+``` perl6
+multi fetch (Int $ID, :$type 'A')
+multi fetch (Str $ID where { … })
+multi fetch (Seq $seq)
+multi fetch (*@partial-seq)
+```
 
 Searches for a sequence identified
 
@@ -47,8 +51,10 @@ This is a very low-level method. See [OEIS::lookup](OEIS::lookup) for a more con
 sub chop-records
 ----------------
 
-    multi chop-records (Seq \pages)
-    multi chop-records (Str $page)
+``` perl6
+multi chop-records (Seq \pages)
+multi chop-records (Str $page)
+```
 
 Takes a single page in OEIS' internal format, or a Seq of them (the return value of [OEIS::fetch](OEIS::fetch)), and returns a Seq of all OEIS records contained in them, as multiline strings.
 
@@ -59,7 +65,9 @@ More a more convenient interface, see [OEIS::lookup](OEIS::lookup).
 sub lookup
 ----------
 
-    sub lookup (:$all = False, |c)
+``` perl6
+sub lookup (:$all = False, |c)
+```
 
 This high-level sub calls [OEIS::fetch](OEIS::fetch) with the captured arguments `|c`, followed by [OEIS::chop-records](OEIS::chop-records) and then creates for each record an [OEIS::Entry](OEIS::Entry) object. Naturally, all search features of [OEIS::fetch](OEIS::fetch) are supported.
 
