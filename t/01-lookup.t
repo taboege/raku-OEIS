@@ -4,7 +4,7 @@ use OEIS;
 use lib 't/lib';
 use Test::OEIS;
 
-plan 6;
+plan 7;
 
 subtest 'parse a single record' => {
     plan 3;
@@ -58,4 +58,9 @@ online -> {
 online -> {
     cmp-ok +OEIS::lookup(90..105, :all), '>', 40,
     "pagination works"
+}
+
+online -> {
+    cmp-ok +OEIS::lookup-all(1,2,3,6,11,23,47), '>', 11,
+    "lookup-all works as well"
 }

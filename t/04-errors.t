@@ -33,6 +33,6 @@ online -> {
 online -> {
     # Hopefully someone will file an issue to this module when someone finds
     # out enough about it to add it to the OEIS :-)
-    is OEIS::lookup((10, 142, 1166, 12796), :all).elems, 0,
+    is OEIS::lookup-all(10, 142, 1166, 12796).elems, 0,
         'LUBF gaussoids remain mysterious';
 }

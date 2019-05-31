@@ -75,6 +75,15 @@ By default only the first record is returned. This is the one that OEIS deems mo
 
 If no result was found, the Seq is empty. Note that a too general query leads to "too many results, please narrow search" error from the OEIS. For other possible errors, see [X::OEIS](X::OEIS).
 
+sub lookup-all
+--------------
+
+``` perl6
+sub lookup-all (|c)
+```
+
+This sub is equivalent to `lookup(:all, |c)`. It exists because when you write a Seq directly into the `lookup` call, the `:all` adverb is swallowed into the Seq by the comma operator, unless the Seq is parenthesized, which you may want to avoid having to do.
+
 SEE ALSO
 ========
 

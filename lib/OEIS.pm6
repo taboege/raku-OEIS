@@ -219,6 +219,25 @@ our sub lookup (:$all = False, |c) {
 
 =begin pod
 
+=head2 sub lookup-all
+
+=for code
+sub lookup-all (|c)
+
+This sub is equivalent to C<lookup(:all, |c)>. It exists because when
+you write a Seq directly into the C<lookup> call, the C<:all> adverb
+is swallowed into the Seq by the comma operator, unless the Seq is
+parenthesized, which you may want to avoid having to do.
+
+=end pod
+
+our sub lookup-all (|c) {
+    my \seq = chop-records fetch |c;
+    seq.map: { OEIS::Entry.parse($_) }
+}
+
+=begin pod
+
 =head1 SEE ALSO
 
 =defn OEIS Internal Format documentation
