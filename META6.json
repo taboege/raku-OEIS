@@ -1,17 +1,20 @@
 {
-  "name"          : "OEIS",
-  "version"       : "0.1.0",
-  "perl"          : "6.c",
-  "authors"       : "Tobias Boege",
-  "description"   : "Look up sequences on the On-Line Encyclopedia of Integer Sequences®",
-  "tags"          : [ ],
-  "license"       : "Artistic-2.0",
-  "depends"       : ["WWW"],
-  "build-depends" : [ ],
-  "test-depends"  : ["Test::META"],
-  "resources"     : [ ],
-  "provides"      : {
-    "OEIS"        : "lib/OEIS.pm6"
+  "name"             : "OEIS",
+  "version"          : "1.0.0",
+  "perl"             : "6.c",
+  "authors"          : [ "Tobias Boege" ],
+  "description"      : "Look up sequences on the On-Line Encyclopedia of Integer Sequences®",
+  "auth"             : "github:taboege",
+  "api"              : "1",
+  "tags"             : [ "OEIS", "API", "sequence" ],
+  "license"          : "Artistic-2.0",
+  "depends"          : [ "WWW" ],
+  "test-depends"     : [ "Test::META" ],
+  "provides"         : {
+    "OEIS"           : "lib/OEIS.pm6",
+    "OEIS::Entry"    : "lib/OEIS/Entry.pm6",
+    "OEIS::Keywords" : "lib/OEIS/Keywords.pm6",
+    "X::OEIS"        : "lib/X/OEIS.pm6"
   },
-  "source-url"    : "git://github.com/taboege/p6-OEIS.git"
+  "source-url"       : "git://github.com/taboege/p6-OEIS.git"
 }

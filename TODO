@@ -1,8 +1,5 @@
-- Return a Failure instead of an empty Seq when no results are found?
-  What about too many results? Either way, use these indicators to
-  bisect a good value in the Seq multi candidate. Add a test.
-- Bump to v1.0.0, add :ver, :auth and :api.
-
 - Add advanced search syntaxes.
+- In the OEIS::fetch Seq candidate, use X::OEIS::TooMany to determine
+  when to increase the sample size for the search. Add a test for it.
 - Can we use the `start` GET parameter to searches for seeking?
   Should that be supported?
