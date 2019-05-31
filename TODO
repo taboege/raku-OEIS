@@ -1,4 +1,3 @@
-- Complete documentation.
 - Update README.
 - Return a Failure instead of an empty Seq when no results are found?
   What about too many results? Either way, use these indicators to
