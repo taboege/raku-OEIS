@@ -1,4 +1,3 @@
-- Update README.
 - Return a Failure instead of an empty Seq when no results are found?
   What about too many results? Either way, use these indicators to
   bisect a good value in the Seq multi candidate. Add a test.
