@@ -28,17 +28,17 @@ sub fetch
 ---------
 
 ``` perl6
-multi fetch (Int $ID, :$type 'A')
+multi fetch (Int $ID, :$type = 'A')
 multi fetch (Str $ID where { … })
 multi fetch (Seq $seq)
 multi fetch (*@partial-seq)
 ```
 
-Searches for a sequence identified
+Searches for a sequence identified by
 
-  * its `Int $ID` under the `$type` namespace,
+  * its `Int $ID` under the `$type` namespace, e.g. the Fibonacci numbers are sequence 45 in type `A`, 692 in type `M` and 256 in type `N`,
 
-  * its `Str $ID` already containing the `$type`,
+  * its `Str $ID` already containing the `$type`, again the Fibonacci numbers are "A000045", "M0692" or "N0256",
 
   * a Seq generating the sequence,
 
@@ -100,3 +100,4 @@ COPYRIGHT AND LICENSE
 Copyright 2018/9 Tobias Boege
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
+

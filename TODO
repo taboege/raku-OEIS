@@ -1,3 +1,4 @@
+- Figure out how to fix links in POD.
 - Add advanced search syntaxes.
 - In the OEIS::fetch Seq candidate, use X::OEIS::TooMany to determine
   when to increase the sample size for the search. Add a test for it.

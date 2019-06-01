@@ -92,15 +92,18 @@ sub fetch'paginated ($query-url, :$start is copy = 0) {
 =head2 sub fetch
 
 =for code
-multi fetch (Int $ID, :$type 'A')
+multi fetch (Int $ID, :$type = 'A')
 multi fetch (Str $ID where { … })
 multi fetch (Seq $seq)
 multi fetch (*@partial-seq)
 
-Searches for a sequence identified
+Searches for a sequence identified by
 
 =item its C<Int $ID> under the C<$type> namespace,
+e.g. the Fibonacci numbers are sequence 45 in type C<A>,
+692 in type C<M> and 256 in type C<N>,
 =item its C<Str $ID> already containing the C<$type>,
+again the Fibonacci numbers are "A000045", "M0692" or "N0256",
 =item a Seq generating the sequence,
 =item an array containing sequence elements
 
