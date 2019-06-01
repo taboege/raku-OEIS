@@ -12,11 +12,14 @@ use OEIS;
 say OEIS::lookup 1, 1, * + * ... *;
 #= OEIS A000045 «Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.»
 
-say OEIS::lookup-all(1, 1, * + * ... *).grep(* !~~ OEIS::easy).head;
-#= OEIS A290689 «Number of transitive rooted trees with n nodes.»
-
 say OEIS::lookup(1, 2, 4 ... ∞).mathematica.head;
 #= Table[2^n, {n, 0, 50}]
+
+# Notice that only some terms of the Seq are evaluated!
+with OEIS::lookup-all(1, 1, * + * ... *).grep(* !~~ OEIS::easy).head {
+    say .gist;     #= OEIS A290689 «Number of transitive rooted trees with n nodes.»
+    say .sequence; #= [1 1 1 2 3 5 8 13 21 34 55 88 143 229 370 592 955 1527 2457 3929]
+}
 ```
 
 DESCRIPTION
