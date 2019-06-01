@@ -12,7 +12,7 @@ use OEIS;
 say OEIS::lookup 1, 1, * + * ... *;
 #= OEIS A000045 «Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.»
 
-say OEIS::lookup((1, 1, *+* ... *), :all).grep(* !~~ OEIS::easy).head;
+say OEIS::lookup-all(1, 1, * + * ... *).grep(* !~~ OEIS::easy).head;
 #= OEIS A290689 «Number of transitive rooted trees with n nodes.»
 
 say OEIS::lookup(1, 2, 4 ... ∞).mathematica.head;
