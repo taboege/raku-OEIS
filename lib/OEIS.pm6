@@ -27,8 +27,9 @@ with OEIS::lookup-all(1, 1, * + * ... *).grep(* !~~ OEIS::easy).head {
 This module provides an interface to the L<On-Line Encyclopedia of Integer Sequences® (OEIS®)|https://oeis.org>,
 a web database of integer sequences. Stick an array or Seq into the C<OEIS::lookup>
 routine and get back the most relevant result that OEIS finds, as an instance of
-L<OEIS::Entry>. With the C<:all> adverb, it returns a lazy Seq of all results.
-Sequences can also be looked up by their IDs. See below for details.
+L<OEIS::Entry>. With the C<:all> adverb or as the C<OEIS::lookup-all> method,
+it returns a lazy Seq of all results. Sequences can also be looked up by
+their IDs. See below for details.
 
 =end pod
 
@@ -163,7 +164,7 @@ You will only need this sub if you get pages from a source
 that isn't L<OEIS::fetch>, e.g. from a cache on disk, or if
 you want the textual records instead of L<OEIS::Entry> objects.
 
-More a more convenient interface, see L<OEIS::lookup>.
+For a more convenient interface, see L<OEIS::lookup>.
 
 =end pod
 

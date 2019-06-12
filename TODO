@@ -4,3 +4,6 @@
   when to increase the sample size for the search. Add a test for it.
 - Can we use the `start` GET parameter to searches for seeking?
   Should that be supported?
+
+- Offer downloading the whole 60 MiB archive of the OEIS and
+  using it as a cache?
