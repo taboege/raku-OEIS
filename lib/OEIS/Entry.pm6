@@ -269,7 +269,7 @@ method parse ($record --> OEIS::Entry:D) {
         }
     }
 
-    OEIS::Entry.new: |%partial-object.Map
+    OEIS::Entry.new: |%partial-object.map({ .key => .value<> }).Map
 }
 
 submethod TWEAK {
