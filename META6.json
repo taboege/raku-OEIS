@@ -1,6 +1,6 @@
 {
   "name"             : "OEIS",
-  "version"          : "1.0.0",
+  "version"          : "1.0.1",
   "perl"             : "6.c",
   "authors"          : [ "Tobias Boege" ],
   "description"      : "Look up sequences on the On-Line Encyclopedia of Integer Sequences®",

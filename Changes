@@ -1,0 +1,10 @@
+Changes for OEIS.
+
+v1.0.1 2019-08-12
+
+  - Add more methodical lookup-all as a synonym for lookup(:all)
+  - Fix compilation with post-2019.07.1 Rakudo (Map does not decont anymore)
+
+v1.0.0 2019-05-31
+
+  - Initial release
